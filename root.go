@@ -9,6 +9,7 @@ import (
 func AppendToServeMux(mux *http.ServeMux) error {
 
 	mux.HandleFunc("GET /hotreload.js", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("content-type", "text/javascript")
 		bytes, err := boilerplate.ReadFile("embed/hotreload.enabled.js")
 		if err != nil {
 			w.WriteHeader(500)
