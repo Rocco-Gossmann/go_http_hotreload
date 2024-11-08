@@ -1,12 +1,16 @@
 package go_http_hotreload
 
 import (
-	"golang.org/x/net/websocket"
+	"log"
 	"net/http"
 	"time"
+
+	"golang.org/x/net/websocket"
 )
 
 func AppendToServeMux(mux *http.ServeMux) error {
+
+	idPool := 0
 
 	mux.HandleFunc("GET /hotreload.js", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("content-type", "text/javascript")
@@ -23,13 +27,29 @@ func AppendToServeMux(mux *http.ServeMux) error {
 
 	mux.HandleFunc("GET /__hotreload.ws", (websocket.Server{
 		Handler: func(c *websocket.Conn) {
+
+			idPool++
+			var id = idPool
+
+			// Keep connection awake
+			go func() {
+				for {
+					time.Sleep(1000 * time.Millisecond)
+					_, err := c.Write([]byte("Ping"))
+					if err != nil {
+						return
+					}
+				}
+			}()
+
+			buff := make([]byte, 1024)
 			for {
-				time.Sleep(1000 * time.Millisecond)
-				_, err := c.Write([]byte("Ping"))
-				if err != nil {
-					return
+				_, err := c.Read(buff)
+				if err == nil {
+					log.Println("conn ", id, " send: ", string(buff))
 				}
 			}
+
 		},
 	}).ServeHTTP)
 

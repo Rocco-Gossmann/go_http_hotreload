@@ -29,6 +29,12 @@ const Hotreload = (function () {
     tryReconnect();
   }
 
+  function sendMsg(...args) {
+    if(socket) {
+      socket.send(JSON.stringify(args))
+    }
+  }
+
   function tryReconnect() {
     window.clearTimeout(reconnectTimeout);
     removeAllListeners();
@@ -63,5 +69,6 @@ const Hotreload = (function () {
 
   return {
     Stop: () => socket.close(),
+    SendMsg: sendMsg
   };
 })();
