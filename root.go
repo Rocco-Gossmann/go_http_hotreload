@@ -42,11 +42,13 @@ func AppendToServeMux(mux *http.ServeMux) error {
 				}
 			}()
 
-			buff := make([]byte, 1024)
 			for {
+				buff := make([]byte, 1024)
 				_, err := c.Read(buff)
 				if err == nil {
-					log.Println("conn ", id, " send: ", string(buff))
+					if len(buff) > 0 {
+						log.Println("conn ", id, " send: ", string(buff))
+					}
 				}
 			}
 
