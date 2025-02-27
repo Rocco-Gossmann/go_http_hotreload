@@ -61,6 +61,15 @@ func main() {
 
 ### Sending Messages to Server
 
+the WebSocket, that this module creates, can also be used to send Messages to the Servers-StdOut.
+
+For that you can call:
+```javascript
+Hotreload.sendMsg("line 1", "line 2" /* , ... */);
+```
+Each argument will result in one line send to StdOut.
+
+
 ## How it works
 
 ### On the Server
