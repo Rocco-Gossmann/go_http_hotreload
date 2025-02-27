@@ -29,9 +29,11 @@ const Hotreload = (function () {
     tryReconnect();
   }
 
-  function sendMsg(...args) {
+  function sendMsg(...lines) {
     if(socket) {
-      socket.send(JSON.stringify(args))
+      for(let line in lines) {
+        socket.send(line)
+      }
     }
   }
 
