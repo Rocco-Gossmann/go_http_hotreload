@@ -1,15 +1,22 @@
 # Go - Hotreload
 
-<!--toc:start-->
-- [Go - Hotreload](#go-hotreload)
-  - [Usage](#usage)
-    - [ServerSide](#serverside)
-    - [ClientSide](#clientside)
-  - [What it does](#what-it-does)
-    - [On the Server](#on-the-server)
-    - [On the Client](#on-the-client)
-    - [Flow](#flow)
-<!--toc:end-->
+<!-- TOC -->
+
+- [Go - Hotreload](#go---hotreload)
+    - [Requirements](#requirements)
+    - [Installation](#installation)
+    - [Usage](#usage)
+        - [ServerSide](#serverside)
+        - [ClientSide](#clientside)
+        - [Sending Messages to Server](#sending-messages-to-server)
+    - [How it works](#how-it-works)
+        - [On the Server](#on-the-server)
+        - [On the Client](#on-the-client)
+        - [Flow](#flow)
+
+<!-- /TOC -->
+<!-- /TOC -->
+
 
 a small package, that presses your Browsers `CMD+R` / `Ctrl+R` / `F5` Key for you when ever the connected server shuts down and comes back up again.
 
@@ -52,17 +59,19 @@ func main() {
 </html>
 ```
 
-## What it does
+### Sending Messages to Server
+
+## How it works
 
 ### On the Server
 
 It adds 3 new Routes to your ServeMux.
 
-| Route                  | Description                                                                 |
-| ---------------------- | --------------------------------------------------------------------------- |
-| `GET /hotreload.js`    | which is used to load the required Javascript functions on the client       |
-| `HEAD /__hotreload.sw` | To check if the Server has come up after it shut down                       |
-| `GET /__hotreload.sw`  | To connect to the ServiceWorker, that will check when the Server shuts down |
+| Route                  | Description                                                                                                                         |
+|------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| `GET /hotreload.js`    | which is used to load the required Javascript functions on the client                                                               |
+| `HEAD /__hotreload.sw` | To check if the Server has come up after it shut down                                                                               |
+| `GET /__hotreload.sw`  | To connect to the ServiceWorker, that will check when the Server shuts down <br /> and receive message send via `Hotreload.sendMsg` |
 
 ### On the Client
 
